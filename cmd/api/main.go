@@ -62,7 +62,6 @@ func main() {
 
 	fmt.Printf("%-20s ETB %.2f\n", "Delivery fee:", float64(deliveryFee)/100)
 
-	// Calculate grand total
 	grandTotal := subtotal + serviceFee + deliveryFee
 
 	fmt.Println("----------------------------------------")
