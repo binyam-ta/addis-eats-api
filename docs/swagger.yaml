@@ -1,0 +1,156 @@
+basePath: /
+definitions:
+  main.createOrderRequest:
+    properties:
+      area:
+        type: string
+      dish_ids:
+        items:
+          type: string
+        type: array
+      phone:
+        type: string
+    type: object
+  main.envelope:
+    additionalProperties: {}
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: REST API documentation for the Addis Eats food ordering platform.
+  title: Addis Eats API
+  version: "1.0"
+paths:
+  /health:
+    get:
+      description: Check whether the Addis Eats API is running
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.envelope'
+      summary: Check API health
+      tags:
+      - Health
+  /menu:
+    get:
+      description: Get all available dishes from the menu
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.envelope'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.envelope'
+      summary: List all dishes
+      tags:
+      - Menu
+  /menu/{id}:
+    get:
+      description: Get a single dish by its ID
+      parameters:
+      - description: Dish ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.envelope'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.envelope'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.envelope'
+      summary: Get a dish
+      tags:
+      - Menu
+  /orders:
+    get:
+      description: Retrieve all customer orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.envelope'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.envelope'
+      summary: List all orders
+      tags:
+      - Orders
+    post:
+      consumes:
+      - application/json
+      description: Create an order using selected menu dishes
+      parameters:
+      - description: Order details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.createOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.envelope'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.envelope'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.envelope'
+      summary: Create a new order
+      tags:
+      - Orders
+  /orders/{id}:
+    get:
+      description: Retrieve a specific order using its ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.envelope'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.envelope'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.envelope'
+      summary: Get an order
+      tags:
+      - Orders
+schemes:
+- http
+swagger: "2.0"

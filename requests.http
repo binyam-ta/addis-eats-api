@@ -1,0 +1,111 @@
+### 1. Health check
+# Expected status: 200 OK
+# Expected body: ok
+# curl -i http://localhost:8080/health
+GET http://localhost:8080/health
+
+### 2. List all dishes
+# Expected status: 200 OK
+# Expected body: JSON array of 8 dishes with snake_case keys
+# curl -i http://localhost:8080/menu
+GET http://localhost:8080/menu
+
+### 3. Filter fasting dishes
+# Expected status: 200 OK
+# Expected body: JSON array of dishes where is_fasting is true
+# curl -i http://localhost:8080/menu?fasting=true
+GET http://localhost:8080/menu?fasting=true
+
+### 4. Sort dishes by price
+# Expected status: 200 OK
+# Expected body: JSON array of dishes sorted ascending by price_santim
+# curl -i http://localhost:8080/menu?sort=price
+GET http://localhost:8080/menu?sort=price
+
+### 5. Invalid sort parameter
+# Expected status: 400 Bad Request
+# Expected body: {"error":"invalid sort parameter"}
+# curl -i http://localhost:8080/menu?sort=unsupported
+GET http://localhost:8080/menu?sort=unsupported
+
+### 6. Get single dish (existing)
+# Expected status: 200 OK
+# Expected body: {"id":"d1","name":"Shiro Wot","price_santim":12000,"is_fasting":true,"note":"Classic chickpea stew"}
+# curl -i http://localhost:8080/menu/d1
+GET http://localhost:8080/menu/d1
+
+### 7. Get single dish (non-existing)
+# Expected status: 404 Not Found
+# Expected body: {"error":"dish not found"}
+# curl -i http://localhost:8080/menu/d99
+GET http://localhost:8080/menu/d99
+
+### 8. POST to GET-only route
+# Expected status: 405 Method Not Allowed
+# curl -i -X POST http://localhost:8080/menu
+POST http://localhost:8080/menu
+
+
+### 9. Create a valid order
+# Expected status: 201 Created
+# curl -i -X POST http://localhost:8080/orders -H "Content-Type: application/json" -d '{"area":"Bole","dish_ids":["d1","d2"],"phone":"0911223344"}'
+POST http://localhost:8080/orders
+Content-Type: application/json
+
+{
+  "area": "Bole",
+  "dish_ids": ["d1", "d2"],
+  "phone": "0911223344"
+}
+
+### 10. Create an order with free delivery (>= 50000 santim)
+# Expected status: 201 Created
+# curl -i -X POST http://localhost:8080/orders -H "Content-Type: application/json" -d '{"area":"Bole","dish_ids":["d4","d5"]}'
+POST http://localhost:8080/orders
+Content-Type: application/json
+
+{
+  "area": "Bole",
+  "dish_ids": ["d4", "d5"]
+}
+
+### 11. Create order with unserved area
+# Expected status: 400 Bad Request
+# Expected body: {"error":"unserved area"}
+# curl -i -X POST http://localhost:8080/orders -H "Content-Type: application/json" -d '{"area":"Ayat","dish_ids":["d1"]}'
+POST http://localhost:8080/orders
+Content-Type: application/json
+
+{
+  "area": "Ayat",
+  "dish_ids": ["d1"]
+}
+
+### 12. Create order with empty dishes
+# Expected status: 400 Bad Request
+# Expected body: {"error":"order has no items"}
+# curl -i -X POST http://localhost:8080/orders -H "Content-Type: application/json" -d '{"area":"Bole","dish_ids":[]}'
+POST http://localhost:8080/orders
+Content-Type: application/json
+
+{
+  "area": "Bole",
+  "dish_ids": []
+}
+
+### 13. Create order with non-existent dish
+# Expected status: 404 Not Found
+# Expected body: {"error":"dish not found"}
+# curl -i -X POST http://localhost:8080/orders -H "Content-Type: application/json" -d '{"area":"Bole","dish_ids":["d999"]}'
+POST http://localhost:8080/orders
+Content-Type: application/json
+
+{
+  "area": "Bole",
+  "dish_ids": ["d999"]
+}
+
+### 14. GET on POST-only orders route
+# Expected status: 405 Method Not Allowed
+# curl -i http://localhost:8080/orders
+GET http://localhost:8080/orders

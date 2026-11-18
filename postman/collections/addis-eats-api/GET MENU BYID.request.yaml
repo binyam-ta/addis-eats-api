@@ -1,0 +1,17 @@
+$kind: http-request
+url: http://localhost:8080/menu/d7
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \  \"area\": \"Bole\",\r
+
+    \  \"phone\": \"0911223344\",\r
+
+    \  \"dish_ids\": \"d7\"\r
+
+    \  \r
+
+    }"
+order: 3589975177736692

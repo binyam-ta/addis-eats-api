@@ -1,0 +1,4 @@
+$kind: http-request
+url: http://localhost:8080/orders
+method: GET
+order: 3892657825958590

@@ -1,0 +1,19 @@
+$kind: http-request
+url: http://localhost:8080/order
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"area\": \"Bole\",\r
+
+    \  \"phone\": \"0911223344\",\r
+
+    \  \"dish_ids\": [\r
+
+    \    \"d1\"\r
+
+    \  ]\r
+
+    }"
+order: 3877264234631956
